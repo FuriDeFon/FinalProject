@@ -1,0 +1,65 @@
+﻿@page "/mainmenu"
+@using System.Threading
+@using System
+
+
+<h1>MainMenu</h1>
+
+<h1>Random Number Generator</h1>
+
+<p>Current random number: <b></b></p>
+
+
+
+
+
+
+@code {// implements IDisposable
+    /*
+    private void StartCountdown()
+    {
+        timer = new Timer(_ =>
+        {
+            if (random > 0)
+            {
+                random--;
+                InvokeAsync(StateHasChanged); // Refresh UI
+            }
+            else
+            {
+                timer?.Dispose(); // Stop timer when countdown ends
+            }
+        }, null, 1000, 1000); // Initial delay: 1s, Interval: 1s
+    }
+
+
+
+    private int randomNumber = 0;
+    private Timer? timer;
+    private readonly Random random = new Random();
+
+    protected override void OnInitialized()
+    {
+        // Set up a timer to call OnTimerCallback every 1000 milliseconds (1 second)
+        timer = new Timer(OnTimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+    }
+
+    private void OnTimerCallback(object state)
+    {
+        // Generate a new random number
+        randomNumber = random.Next(1, 1000); // Generates a random number between 1 and 999
+
+        // Update the UI on Blazor's synchronization context
+        // This is crucial because the timer callback runs on a different thread
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        // Dispose of the timer when the component is removed to prevent memory leaks
+        timer?.Dispose();
+    }
+
+    */
+
+}

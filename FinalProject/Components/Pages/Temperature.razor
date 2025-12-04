@@ -1,0 +1,116 @@
+﻿@page "/temperature"
+@using Syncfusion.Blazor.Charts
+@using System.Collections.ObjectModel
+@using System.Timers
+
+
+
+<h1>Temperature Monitor</h1>
+
+
+<div class="control-section" align="center">
+    <SfChart @ref="liveChart" Title="Robot Temperature" Width="100%" >
+        <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.DateTime" LabelFormat="mm:ss" Title="Time (s)">
+            <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+        </ChartPrimaryXAxis>
+        <ChartPrimaryYAxis Title="Temperature (°C)" Minimum="0" Interval="20" Maximum="80" LabelFormat="{value}">
+            <ChartAxisLineStyle Width="0" Color="transparent"></ChartAxisLineStyle>
+        </ChartPrimaryYAxis>
+        <ChartSeriesCollection>
+            <ChartSeries Type="ChartSeriesType.Line" Width="2" DataSource="@DataPoints"
+                         XName="@nameof(ChartDataPoint.Time)" YName="@nameof(ChartDataPoint.Temperature)">
+                <ChartSeriesAnimation Enable="false"></ChartSeriesAnimation>
+            </ChartSeries>
+        </ChartSeriesCollection>
+    </SfChart>
+</div>
+
+
+
+
+
+@code {
+
+    private static Timer? timer;
+    private SfChart? liveChart;
+    private double dataLength = 10;
+    private Random randomNum = new Random();
+    public ObservableCollection<ChartDataPoint>? DataPoints;
+
+    protected override void OnInitialized()
+    {
+        // Provide the chart with initial data during page load.
+        DataPoints = new ObservableCollection<ChartDataPoint>();
+        for (int i = 0; i < dataLength; i++)
+            DataPoints.Add(new ChartDataPoint
+            {
+                Time = DateTime.Now.AddSeconds(i + 1),
+                Temperature = randomNum.Next(30, 50) // Replace with service that creates a random number
+            });
+        // Starting live update in the chart.
+        timer = new Timer(1000);
+        timer.Elapsed += AddData;
+        timer.AutoReset = true;
+        timer.Enabled = true;
+    }
+
+    private void AddData(Object source, ElapsedEventArgs e)
+    {
+        if (liveChart == null)
+            return;
+        dataLength++;
+        DataPoints.RemoveAt(0);
+        DataPoints.Add(new ChartDataPoint
+        {
+            Time = DateTime.Now.AddSeconds(dataLength + 1),
+            Temperature = randomNum.Next(30, 50)
+        });
+    }
+
+    public class ChartDataPoint
+    {
+        public DateTime Time { get; set; }
+        public double Temperature { get; set; }
+    }
+
+
+
+
+
+
+
+	// Turn all this into a service later called like, randomRollingFloatQueueGenerator
+
+    // Temperature to be read into chart (spitballing a range of 0 to 40 celsius)
+    private float randomTemp = 0.0f;
+    // Queue to store 10(? 20?) most recent temperature values to display on graph
+    private Queue<float> tempQueue = new Queue<float>(10);
+    // Enqueue starting values (ten 0's) for graph to initially display
+    public void initialEnqueue()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            tempQueue.Enqueue(10);
+        }
+    }
+    // Method with loop to constantly boot out oldest temperature value and put in newest one
+    public void rollingQueue()
+    {
+        tempQueue.Dequeue();
+        tempQueue.Enqueue(randomTemp);
+    }
+
+
+    // So we have the random temperature value, the queue that'll store them, and the function to dequeue and enqueue it
+
+    // Now let's test it. First output the queue on the page.
+
+
+    // Basically the queue will be updated with the new values, and then the chart will update to display them right after
+
+
+    
+
+
+
+}
