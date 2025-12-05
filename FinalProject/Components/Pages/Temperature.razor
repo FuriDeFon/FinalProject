@@ -2,6 +2,7 @@
 @using Syncfusion.Blazor.Charts
 @using System.Collections.ObjectModel
 @using System.Timers
+@using FinalProject.Services
 
 
 
@@ -34,8 +35,8 @@
     private static Timer? timer;
     private SfChart? liveChart;
     private double dataLength = 10;
-    private Random randomNum = new Random();
     public ObservableCollection<ChartDataPoint>? DataPoints;
+    RetrieveTemperature GetTemperature = new RetrieveTemperature();
 
     protected override void OnInitialized()
     {
@@ -45,7 +46,7 @@
             DataPoints.Add(new ChartDataPoint
             {
                 Time = DateTime.Now.AddSeconds(i + 1),
-                Temperature = randomNum.Next(30, 50) // Replace with service that creates a random number
+                Temperature = GetTemperature.RetrieveMeasurement()
             });
         // Starting live update in the chart.
         timer = new Timer(1000);
@@ -63,7 +64,7 @@
         DataPoints.Add(new ChartDataPoint
         {
             Time = DateTime.Now.AddSeconds(dataLength + 1),
-            Temperature = randomNum.Next(30, 50)
+            Temperature = GetTemperature.RetrieveMeasurement()
         });
     }
 

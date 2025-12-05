@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace FinalProject.Services
 {
-    public class RandomPower : IRetrieveMeasurement
+    public class RetrieveTemperature : IRetrieveMeasurement
     {
+        private Random randomNumber = new Random();
         public float RetrieveMeasurement()
         {
-            throw new NotImplementedException();
+            return randomNumber.Next(30, 50);
         }
     }
 }

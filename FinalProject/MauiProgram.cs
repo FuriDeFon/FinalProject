@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using FinalProject.Services;
+using Microsoft.Extensions.Logging;
 using Syncfusion.Blazor;
 
 namespace FinalProject
@@ -17,6 +18,7 @@ namespace FinalProject
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddSyncfusionBlazor();
+            builder.Services.AddSingleton<RoboticaDatabase>();
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
