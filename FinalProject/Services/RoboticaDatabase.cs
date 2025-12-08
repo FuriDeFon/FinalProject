@@ -10,7 +10,7 @@ namespace FinalProject.Services
 {
     public class RoboticaDatabase
     {
-        SQLiteAsyncConnection database;
+        SQLiteAsyncConnection? database;
 
         public RoboticaDatabase()
         {

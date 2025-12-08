@@ -1,4 +1,4 @@
-﻿@page "/temperature"
+﻿@page "/power"
 @using Syncfusion.Blazor.Charts
 @using System.Collections.ObjectModel
 @using System.Timers
@@ -7,7 +7,7 @@
 @inject RoboticaDatabase db
 
 
-<h1>Temperature Monitor</h1>
+<h1>Power Monitor</h1>
 
 
 
@@ -28,16 +28,16 @@
 
 
 <div class="control-section" align="center">
-    <SfChart @ref="liveChart" Title="Robot Temperature" Width="100%" >
+    <SfChart @ref="liveChart" Title="Robot Power Consumption Over Time" Width="100%">
         <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.DateTime" LabelFormat="mm:ss" Title="Time (s)">
             <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
         </ChartPrimaryXAxis>
-        <ChartPrimaryYAxis Title="Temperature (°C)" Minimum="0" Interval="20" Maximum="80" LabelFormat="{value}">
+        <ChartPrimaryYAxis Title="Power Consumption (w)" Minimum="0" Interval="20" Maximum="80" LabelFormat="{value}">
             <ChartAxisLineStyle Width="0" Color="transparent"></ChartAxisLineStyle>
         </ChartPrimaryYAxis>
         <ChartSeriesCollection>
             <ChartSeries Type="ChartSeriesType.Line" Width="2" DataSource="@DataPoints"
-                         XName="@nameof(ChartDataPoint.Time)" YName="@nameof(ChartDataPoint.Temperature)">
+                         XName="@nameof(ChartDataPoint.Time)" YName="@nameof(ChartDataPoint.Power)">
                 <ChartSeriesAnimation Enable="false"></ChartSeriesAnimation>
             </ChartSeries>
         </ChartSeriesCollection>
@@ -52,7 +52,7 @@
 
     // Connectivity stuff
 
-    
+
 
     // Robot dropdown menu stuff
 
@@ -70,7 +70,7 @@
     private SfChart? liveChart;
     private double dataLength = 10;
     public ObservableCollection<ChartDataPoint>? DataPoints;
-    RetrieveTemperature GetTemperature = new RetrieveTemperature();
+    RetrievePower GetPower = new RetrievePower();
 
     protected override void OnInitialized()
     {
@@ -80,7 +80,7 @@
             DataPoints.Add(new ChartDataPoint
             {
                 Time = DateTime.Now.AddSeconds(i + 1),
-                Temperature = GetTemperature.RetrieveMeasurement()
+                Power = GetPower.RetrieveMeasurement()
             });
         // Starting live update in the chart.
         timer = new Timer(1000);
@@ -98,14 +98,14 @@
         DataPoints.Add(new ChartDataPoint
         {
             Time = DateTime.Now.AddSeconds(dataLength + 1),
-            Temperature = GetTemperature.RetrieveMeasurement()
+            Power = GetPower.RetrieveMeasurement()
         });
     }
 
     public class ChartDataPoint
     {
         public DateTime Time { get; set; }
-        public float Temperature { get; set; }
+        public float Power { get; set; }
     }
 
 

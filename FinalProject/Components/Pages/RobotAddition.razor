@@ -1,0 +1,85 @@
+﻿@page "/robotaddition"
+@using FinalProject.Models
+@using FinalProject.Services
+@inject RoboticaDatabase db
+
+
+
+
+<h1>Robot Addition</h1>
+
+<h3>Please fill out the following form to add a new robot.</h3>
+
+<div>
+	<label> <input @bind="Name" type="text" placeholder="Robot name" /></label> <br />
+	<label> <input @bind="Model" type="text" placeholder="Robot model" /></label> <br />
+	<label> <input @bind="Description" type="text" placeholder="Robot description" /></label> <br />
+	<label> <input @bind="Manufacturer" type="text" placeholder="Robot manufacturer" /></label> <br /> <br />
+
+	<button @onclick="OnClick">Add</button>
+
+	<p>@success</p>
+</div>
+
+
+
+<ul>
+	@foreach (var robot in Robots)
+	{
+		<li>@robot.RobotName</li>
+		<br />
+		<li>@robot.RobotModel</li>
+		<br />
+		<li>@robot.RobotDescription</li>
+		<br />
+		<li>@robot.RobotManufacturer</li>
+		<br />
+	}
+</ul>
+
+
+
+
+@code {
+
+
+	public string Name { get; set; } = string.Empty;
+	public string Model { get; set; } = string.Empty;
+	public string Description { get; set; } = string.Empty;
+	public string Manufacturer { get; set; } = string.Empty;
+
+	public string success { get; set; } = string.Empty;
+
+	public List<Robot> Robots { get; set; } = new List<Robot>();
+
+
+	// MAKE FOUR INPUT TEXT BOXES FOR THE NAME AND STUFF TO PUT IN THE DATABASE
+
+
+	public async void OnClick()
+	{
+		if (!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Model) && !string.IsNullOrEmpty(Description) && !string.IsNullOrEmpty(Manufacturer))
+		{
+			var robo = new Robot { RobotName = Name, RobotModel = Model, RobotDescription = Description, RobotManufacturer = Manufacturer };
+			await db.SaveItemAsync(robo);
+
+			Robots = await db.GetItemsAsync();
+
+			Name = string.Empty;
+			Model = string.Empty;
+			Description = string.Empty;
+			Manufacturer = string.Empty;
+
+			success = "Robot successfully added!";
+
+			await InvokeAsync(StateHasChanged);
+		}
+		else
+		{
+			success = "Robot failed to be added. One or more fields are empty.";
+		}
+	}
+
+
+
+}
