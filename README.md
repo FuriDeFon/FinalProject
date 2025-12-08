@@ -1,7 +1,7 @@
 # Final Project
 
 
-I tried so hard to get this as close to finished as possible but my mental health got so bad I feel like I'm barely capable anymore. So I'm just documenting things here. If anything is missing from the project in any way, shape, or form, this is why.
+I tried so hard to get this as close to finished as possible but my mental health got so bad I feel like I'm barely capable anymore. So I'm just documenting things here. If anything is missing from the project in any way, shape, or form, this is why. Anything not listed, I couldn't bring myself to attempt.
 
 
 I tried to implement checking the user's internet connection for my native feature.
