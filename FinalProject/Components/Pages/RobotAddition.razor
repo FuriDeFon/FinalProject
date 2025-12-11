@@ -14,8 +14,14 @@
 	<label> <input @bind="Name" type="text" placeholder="Robot name" /></label> <br />
 	<label> <input @bind="Model" type="text" placeholder="Robot model" /></label> <br />
 	<label> <input @bind="Description" type="text" placeholder="Robot description" /></label> <br />
-	<label> <input @bind="Manufacturer" type="text" placeholder="Robot manufacturer" /></label> <br /> <br />
+	<label> <input @bind="Manufacturer" type="text" placeholder="Robot manufacturer" /></label> <br />
+	<label> <input @bind="MaxTemperature" type="text" placeholder="Robot max temperature" /></label> <br />
+	<label> <input @bind="MinTemperature" type="text" placeholder="Robot min temperature" /></label> <br />
+	<label> <input @bind="MaxPower" type="text" placeholder="Robot max power draw" /></label> <br />
+	<label> <input @bind="MinPower" type="text" placeholder="Robot min power draw" /></label> <br />
 
+
+	<br />
 	<button @onclick="OnClick">Add</button>
 
 	<p>@success</p>
@@ -34,6 +40,14 @@
 		<br />
 		<li>@robot.RobotManufacturer</li>
 		<br />
+		<li>@robot.RobotMaxTemperature</li>
+		<br />
+		<li>@robot.RobotMinTemperature</li>
+		<br />
+		<li>@robot.RobotMaxPower</li>
+		<br />
+		<li>@robot.RobotMinPower</li>
+		<br />
 	}
 </ul>
 
@@ -47,20 +61,26 @@
 	public string Model { get; set; } = string.Empty;
 	public string Description { get; set; } = string.Empty;
 	public string Manufacturer { get; set; } = string.Empty;
+	public int? MaxTemperature { get; set; }
+	public int? MinTemperature { get; set; }
+	public int? MaxPower { get; set; }
+	public int? MinPower { get; set; }
+
 
 	public string success { get; set; } = string.Empty;
 
 	public List<Robot> Robots { get; set; } = new List<Robot>();
 
 
-	// MAKE FOUR INPUT TEXT BOXES FOR THE NAME AND STUFF TO PUT IN THE DATABASE
 
 
 	public async void OnClick()
 	{
-		if (!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Model) && !string.IsNullOrEmpty(Description) && !string.IsNullOrEmpty(Manufacturer))
+		if (!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Model) && !string.IsNullOrEmpty(Description) && !string.IsNullOrEmpty(Manufacturer) 
+			&& MaxTemperature != null && MinTemperature != null && MaxPower != null && MinPower != null)
 		{
-			var robo = new Robot { RobotName = Name, RobotModel = Model, RobotDescription = Description, RobotManufacturer = Manufacturer };
+			var robo = new Robot { RobotName = Name, RobotModel = Model, RobotDescription = Description, RobotManufacturer = Manufacturer, 
+									RobotMaxTemperature = (int)MaxTemperature, RobotMinTemperature = (int)MinTemperature, RobotMaxPower = (int)MaxPower, RobotMinPower = (int)MinPower };
 			await db.SaveItemAsync(robo);
 
 			Robots = await db.GetItemsAsync();
@@ -69,6 +89,11 @@
 			Model = string.Empty;
 			Description = string.Empty;
 			Manufacturer = string.Empty;
+			MaxTemperature = null;
+			MinTemperature = null;
+			MaxPower = null;
+			MinPower = null;
+
 
 			success = "Robot successfully added!";
 

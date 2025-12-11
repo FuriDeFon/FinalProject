@@ -1,5 +1,5 @@
 ﻿@page "/"
-
+@inject FinalProject.Services.SecureStore SecureStore
 
 <section style="position: absolute; top: 30%; left: 50%;">
 
@@ -8,13 +8,13 @@
 	<br />
 	<br />
 
-		<form>
-			<input type="text" placeholder="Username">
+		<form @onsubmit = "Login">
+			<input type="text" placeholder="Username" @bind="Username" />
 
 			<br />
 			<br />
 			
-			<input type="password" placeholder="Password">
+			<input type="password" placeholder="Password" @bind= "Password">
 			
 			<br />
 			<br />
@@ -35,17 +35,18 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 @code {
+
+	private string Username { get; set; }
+	private string Password { get; set; }
+
+	private async Task Login()
+	{
+		await SecureStore.SetAsync("username", Username);
+
+		var savedUser = await SecureStore.GetAsync("username");
+
+
+	}
 
 }

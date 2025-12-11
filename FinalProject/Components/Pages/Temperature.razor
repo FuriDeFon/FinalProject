@@ -14,15 +14,13 @@
 
 <div style="text-align:right">
     <label for="RobotID">Robot Select</label>
-    <select>
+    <select @onchange = "ChangeRobot">
         @foreach (var robot in Robots)
         {
             <option value="@robot.RobotID">@robot.RobotName</option>
         }
     </select>
 </div>
-
-<p></p>
 
 
 
@@ -48,11 +46,12 @@
 
 
 
+
 @code {
 
     // Connectivity stuff
 
-    
+
 
     // Robot dropdown menu stuff
 
@@ -64,6 +63,16 @@
         Robots = await db.GetItemsAsync();
     }
 
+    public async Task ChangeRobot(ChangeEventArgs robotID)
+    {
+        var robot = await db.GetItemAsync(int.Parse(robotID.Value.ToString()));
+        
+        minRobotTemperature = robot.RobotMinTemperature;
+        maxRobotTemperature = robot.RobotMaxTemperature;
+    }
+
+
+
     // Chart stuff
 
     private static Timer? timer;
@@ -71,6 +80,8 @@
     private double dataLength = 10;
     public ObservableCollection<ChartDataPoint>? DataPoints;
     RetrieveTemperature GetTemperature = new RetrieveTemperature();
+    public int minRobotTemperature = 0;
+    public int maxRobotTemperature = 0;
 
     protected override void OnInitialized()
     {
@@ -80,7 +91,7 @@
             DataPoints.Add(new ChartDataPoint
             {
                 Time = DateTime.Now.AddSeconds(i + 1),
-                Temperature = GetTemperature.RetrieveMeasurement()
+                Temperature = GetTemperature.RetrieveMeasurement(minRobotTemperature, maxRobotTemperature)
             });
         // Starting live update in the chart.
         timer = new Timer(1000);
@@ -98,7 +109,7 @@
         DataPoints.Add(new ChartDataPoint
         {
             Time = DateTime.Now.AddSeconds(dataLength + 1),
-            Temperature = GetTemperature.RetrieveMeasurement()
+            Temperature = GetTemperature.RetrieveMeasurement(minRobotTemperature, maxRobotTemperature)
         });
     }
 

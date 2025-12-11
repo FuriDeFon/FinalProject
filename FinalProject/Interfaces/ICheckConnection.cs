@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace FinalProject.Interfaces
 {
-    public interface IRetrieveMeasurement
+    public interface ICheckConnection
     {
-        float RetrieveMeasurement(int min, int max);
+        NetworkAccess CheckConnectivity();
     }
 }

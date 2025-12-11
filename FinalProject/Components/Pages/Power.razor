@@ -14,7 +14,7 @@
 
 <div style="text-align:right">
     <label for="RobotID">Robot Select</label>
-    <select>
+    <select @onchange="ChangeRobot">
         @foreach (var robot in Robots)
         {
             <option value="@robot.RobotID">@robot.RobotName</option>
@@ -64,6 +64,13 @@
         Robots = await db.GetItemsAsync();
     }
 
+    public async Task ChangeRobot(ChangeEventArgs robotID)
+    {
+        var robot = await db.GetItemAsync(int.Parse(robotID.Value.ToString()));
+        minRobotPower = robot.RobotMinPower;
+        maxRobotPower = robot.RobotMaxPower;
+    }
+
     // Chart stuff
 
     private static Timer? timer;
@@ -71,6 +78,8 @@
     private double dataLength = 10;
     public ObservableCollection<ChartDataPoint>? DataPoints;
     RetrievePower GetPower = new RetrievePower();
+    public int minRobotPower = 0;
+    public int maxRobotPower = 0;
 
     protected override void OnInitialized()
     {
@@ -80,7 +89,7 @@
             DataPoints.Add(new ChartDataPoint
             {
                 Time = DateTime.Now.AddSeconds(i + 1),
-                Power = GetPower.RetrieveMeasurement()
+                Power = GetPower.RetrieveMeasurement(minRobotPower, maxRobotPower)
             });
         // Starting live update in the chart.
         timer = new Timer(1000);
@@ -98,7 +107,7 @@
         DataPoints.Add(new ChartDataPoint
         {
             Time = DateTime.Now.AddSeconds(dataLength + 1),
-            Power = GetPower.RetrieveMeasurement()
+            Power = GetPower.RetrieveMeasurement(minRobotPower, maxRobotPower)
         });
     }
 

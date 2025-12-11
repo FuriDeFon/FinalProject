@@ -15,6 +15,9 @@ namespace FinalProject.Models
         public string? RobotModel { get; set; }
         public string? RobotDescription { get; set; }
         public string? RobotManufacturer {  get; set; }
-        
+        public int RobotMaxTemperature { get; set; }
+        public int RobotMinTemperature { get; set; }
+        public int RobotMaxPower { get; set; }
+        public int RobotMinPower { get; set; }
     }
 }

@@ -19,6 +19,8 @@ namespace FinalProject
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddSyncfusionBlazor();
             builder.Services.AddSingleton<RoboticaDatabase>();
+            builder.Services.AddSingleton<SecureStore>();
+
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();

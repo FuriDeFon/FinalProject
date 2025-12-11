@@ -10,9 +10,9 @@ namespace FinalProject.Services
     public class RetrievePower : IRetrieveMeasurement
     {
         private Random randomNumber = new Random();
-        public float RetrieveMeasurement()
+        public float RetrieveMeasurement(int min, int max)
         {
-            return randomNumber.Next(70, 80);
+            return randomNumber.Next(min, max);
         }
     }
 }
