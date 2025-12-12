@@ -8,20 +8,20 @@
 	<br />
 	<br />
 
-		<form @onsubmit = "Login">
+		<form>
 			<input type="text" placeholder="Username" @bind="Username" />
 
 			<br />
 			<br />
 			
-			<input type="password" placeholder="Password" @bind= "Password">
+			<input type="password" placeholder="Password" @bind="Password" />
 			
 			<br />
 			<br />
 			<br />
 			
 			<div style="text-align: center;">
-				<button type="submit">Sign In</button>
+				<button @onclick = "Login" type="button">Sign In</button>
 			</div>
 		</form>
 	<br />
